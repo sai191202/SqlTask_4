@@ -1,0 +1,33 @@
+REM Open Command Prompt (cmd)
+cd "C:\Program Files\MySQL\MySQL Server 8.0\bin"
+
+REM Create a backup folder if it doesn't exist
+mkdir C:\backup
+
+REM Backup a single database
+mysqldump -u root -p database_name > C:\backup\backup.sql
+
+REM Backup all databases
+mysqldump -u root -p --all-databases > C:\backup\all_backup.sql
+
+REM Backup specific tables
+mysqldump -u root -p database_name table1 table2 > C:\backup\backup.sql
+
+REM Compressed backup (requires gzip installed)
+mysqldump -u root -p database_name | gzip > C:\backup\backup.sql.gz
+
+REM Restore a single database
+mysql -u root -p database_name < C:\backup\backup.sql
+
+REM Restore all databases
+mysql -u root -p < C:\backup\all_backup.sql
+
+REM Restore a compressed backup
+gunzip < C:\backup\backup.sql.gz | mysql -u root -p database_name
+
+REM Create a database if it doesn't exist
+mysql -u root -p -e "CREATE DATABASE database_name;"
+mysql -u root -p database_name < C:\backup\backup.sql
+
+REM Verify the backup files
+DIR C:\backup
